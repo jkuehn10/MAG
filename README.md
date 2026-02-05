@@ -4,6 +4,8 @@ This pipeline is Qijun Zhang's use for metagenomic and metatranscriptomic analys
 
 The quantitative output for microbial phenotype is the MAG (Metagenome-assembled genomes) abundance and microbial transcripts abundance of MAG genes.
 
+This repository was forked by Jessamine Kuehn from the [original repository](https://github.com/qijunz/MAG/tree/master) to add documentation and update scripts. 
+
 ## Steps
 
 The input data for this pipeline should be high-quality shotgun reads (fastq format).
