@@ -1,0 +1,18 @@
+universe = vanilla
+
+executable = WGS_combine_MARS_MAGs.sh
+
+Requirements = (OpSys == "LINUX") && (OpSysMajorVer == 9) && (Target.HasCHTCStaging == true)
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+log    = WGS_combine_MARS_MAGs.log
+output = WGS_combine_MARS_MAGs.out
+error  = WGS_combine_MARS_MAGs.error
+
+request_memory = 16GB
+request_disk   = 32GB
+request_cpus   = 1
+
+queue
