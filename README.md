@@ -132,7 +132,7 @@ After step 7, run `python_and_R/MAG_genome_counts_kallisto.py`, adapted from Qij
 
 ### [8] Build Hidden Markov Models (HMMs) for genes of interest and identify MAGs with these genes
 
-To identify MAGs that are putative producers of propionate and butyrate, genes and their gene IDs required for and specific to pathways for their production were identified from the literature. Well-validated amino acid sequences were acquired from the NCBI database and used to assemble a reference sequences .fasta file, with at least 5 reference sequences per gene. With hmm_012026.py, adapted from Qijun's script, muscle was used to perform multiple sequence alignment and HMMER was used to build Hidden Markov Models (HMMs) from these reference sequences (at least 5 per gene) and search each gene for a match to each HMM. The output .csv file provides information on which MAGs contain the genes involved in each pathway of interest.
+To identify MAGs that are putative producers of propionate and butyrate, genes and their gene IDs required for and specific to pathways for their production were identified from the literature. Well-validated amino acid sequences were acquired from the NCBI database and used to assemble a reference sequences .fasta file, with at least 5 reference sequences per gene. With `python_and_R/hmm_012026.py`, adapted from Qijun's script, muscle was used to perform multiple sequence alignment and HMMER was used to build Hidden Markov Models (HMMs) from these reference sequences (at least 5 per gene) and search each gene for a match to each HMM. The output .csv file provides information on which MAGs contain the genes involved in each pathway of interest.
 
 
 ## Contact
