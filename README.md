@@ -8,7 +8,18 @@ This repository was forked by Jessamine Kuehn from the [original repository](htt
 
 ## Steps
 
-The input data for this pipeline should be high-quality shotgun reads (fastq format).
+The input data for this pipeline should be shotgun sequencing reads (fastq format).
+
+### [0] Trim, filter, and concatenate reads
+
+Shotgun sequencing reads vary in length and quality, and individual samples may have been sequenced across multiple flow-cell lanes. 
+
+- First, reads are quality trimmed with a sliding window of 4 bases and a minimum average Phred score of 20 (SLIDINGWINDOW:4:20). Reads shorter than 50 bp after trimming are discarded (MINLEN:50).
+
+- Then, paired reads that pass trimming and filtering are retained as read pairs. For each sample, concatenate reads from different sequencing lanes to generate a single paired-end read set per sample. 
+
+One example for this step on CHTC is shown in `chtc/MARS_WGS_trimmomatic_concatLanes_MAGS.sh`. This script was adapted from Qijun’s script.
+
 
 ### [1] Remove host reads
 
@@ -39,6 +50,11 @@ The assembled contigs are usually genome fragments, contigs binning can generate
 
 - Next, provided the sorted `.bam` file of reads mapping to contigs and the contigs sequence files, MetaBAT2 (default parameters) are used for contigs binning. One example running on [CHTC](https://chtc.cs.wisc.edu/) is showed in `chtc/WGS_binning_metabat2.sh`.
 
+- Third, make a file that only includes the MAGs (.fa files) in each sample. 
+Add sample name to bin names so that bins do not overwrite each other when they are combined. An example script is `chtc/WGS_collect_all_MAGs.sh`. 
+
+- Finally, combine all MAG files from all samples into one tarball. An example script is `chtc/WGS_combine_MARS_MAGs.sh`. 
+
 
 ### [4] MAG quality control and dereplication
 
@@ -57,9 +73,28 @@ The output of MetaBat2 are all the bins identified. Because the assembly are per
 
 The output of this step is the final set of high-quality non-redundant MAGs (completeness > 90%, contamination < 5% and average nucleotide identity (ANI) > 99%). One example for this step running on [CHTC](https://chtc.cs.wisc.edu/) is showed in `chtc/MAG_checkm.sh` and `chtc/MAG_drep.sh`.
 
+After the checkm step but before the drep step, reorganization and filtering is necessary. One way to do this is to transfer MAG_checkm_out (unzipped) and MARS_MAG (unzipped) to the local computer; then run the following python scripts in the python folder, adapted from a script from Qijun: 
+
+- `python_and_R/after_checkm_part1.py` moves data from the .out file to a readable .tsv file.
+- `python_and_R/after_checkm_part2.py` filters high quality MAGs with completeness >90% and contamination <5%.
+- `python_and_R/after_checkm_part3.py` formats the columns of the table of stats for each MAG in a .tsv file.
+
+Then transfer MARS_MAG_HQ back to the CHTC home directory and zip it. 
+
+After the drep step, move MAG_drep_out (unzipped) to the local computer. 
+
+- In RStudio run the following R script, adapted from the one from Qijun: `python_and_R/MAG_drep_011726.R` to score MAGs and select those with the highest score as representative MAGs (as described with the formula above) to generate a list of non-redundant MAGs. 
+- Then run the following python script, adapted from the one from Qijun: `python_and_R/after_drep.py` to create a folder containing .fa files for only the non-redundant MAGs. 
+
+Then transfer that folder, MARS_MAG_NR, back to the CHTC home directory and zip it. 
+
+*Note: these may be large files to transfer to the local computer. Another possibility is to run these python scripts in the CHTC with .sub and .sh files. 
+
 ### [5] MAG taxonomy classification
 
-Taxonomic assignments of these 436 MAGs were using the Genome Taxonomy Database Toolkit ([GTDB-Tk](https://github.com/Ecogenomics/GTDBTk)) and the GTDB database. One example running on [CHTC](https://chtc.cs.wisc.edu/) is showed in `chtc/MAG_gtdbtk.sh`.
+Taxonomic assignments of these 436 MAGs were using the Genome Taxonomy Database Toolkit ([GTDB-Tk](https://github.com/Ecogenomics/GTDBTk)) and the GTDB database. One example running on [CHTC](https://chtc.cs.wisc.edu/) is showed in `chtc/MAG_gtdbtk.sh`. Note: this uses a conda environment, which must be created in the CHTC home directory with conda-forge, bioconda, and gtdbtk version 2.3.2 installed before running this script.
+
+Then transfer MAG_gtdbtk_out to the local computer and run `python_and_R/gtdb_tk_annotation_summary.py`, adapted from Qijun's script, to put the data into a readable .tsv file. This contains taxonomic assignments of MAGs. 
 
 
 ### [6] MAG gene identification and annotation
@@ -71,6 +106,13 @@ With full sequence of MAG, genes can be predicted and annotated to different dat
 - For example, genes can be annotated to KEGG using [hmmer](http://hmmer.org/) and [kofam](https://github.com/takaram/kofam_scan) database.
 
 One example for this step running on [CHTC](https://chtc.cs.wisc.edu/) is showed in `chtc/MAG_prokka.sh` and `chtc/MAG_gene_kofam.sh`.
+
+After MAG_prokka.sh, run `python_and_R/MAG_prokka_annotation.py`, adapted from Qijun's script, which puts gene information from each MAG into one spreadsheet and puts the .faa files for each gene into one folder.
+
+Note: for MAG_gene_kofam.sh, tools are downloaded from https://www.genome.jp/ftp/db/kofam/. In this script, instead of compiling ruby and parallel, these are installed into a conda environment in the CHTC home directory before running this script.
+
+After MAG_gene_kofam.sh, run `python_and_R/KEGG_kofam_annotation_summary.py`, adapted from Qijun's script, which filters to select only KOs that have been confidently assigned and exports the data in a readable .tsv file. This provides KO assignments to genes in MAGs. 
+
 
 ### [7] Estimate MAG and MAG gene abundance
 
@@ -84,6 +126,15 @@ To get quantitative microbial phenotypes, MAG and MAG gene abundances can be est
 
 One example for this step running on [CHTC](https://chtc.cs.wisc.edu/) is showed in `chtc/MAG_kallisto.sh`.
 
+Before step 7, run `python_and_R/prep_for_kallisto.py`, adapted from Qijun's script, to rename the non-redundant MAG fasta files so that bin/MAG ID is added before contig number in the file name so that kallisto can keep them separate. 
+
+After step 7, run `python_and_R/MAG_genome_counts_kallisto.py`, adapted from Qijun's script, to export the estimated relative abundances in a readable .tsv file, and do cpm and tpm normalization. 
+
+### [8] Build Hidden Markov Models (HMMs) for genes of interest and identify MAGs with these genes
+
+To identify MAGs that are putative producers of propionate and butyrate, genes and their gene IDs required for and specific to pathways for their production were identified from the literature. Well-validated amino acid sequences were acquired from the NCBI database and used to assemble a reference sequences .fasta file, with at least 5 reference sequences per gene. With hmm_012026.py, adapted from Qijun's script, muscle was used to perform multiple sequence alignment and HMMER was used to build Hidden Markov Models (HMMs) from these reference sequences (at least 5 per gene) and search each gene for a match to each HMM. The output .csv file provides information on which MAGs contain the genes involved in each pathway of interest.
+
 
 ## Contact
 **Qijun Zhang** (qijun0507@gmail.com)
+**Jessamine Kuehn** (jessaminekuehn@gmail.com)
