@@ -10,19 +10,19 @@ export PYTHONPATH=$(pwd)/python-3.8-packages
 
 
 # transfer MAG files
-cp /staging/qzhang333/DOFS_MAG_NR.tar.gz .
-tar -zxf DOFS_MAG_NR.tar.gz
+cp /staging/kuehn4/MARS_WGS/MARS_MAG_NR.tar.gz .
+tar -zxf MARS_MAG_NR.tar.gz
 
 
 mkdir MAG_prokka_out
 
 # run Prokka
-python run_prokka.py -b DOFS_MAG_NR -o MAG_prokka_out -p 4
+python run_prokka_012026.py -b MARS_MAG_NR -o MAG_prokka_out -p 4
 
 
-# move output to staging/qzhang333
+# move output to staging/kuehn4
 tar -czf MAG_prokka_out.tar.gz MAG_prokka_out
-mv MAG_prokka_out.tar.gz /staging/qzhang333
+mv MAG_prokka_out.tar.gz /staging/kuehn4/MARS_WGS
 
 # clear other data
 rm *.tar.gz

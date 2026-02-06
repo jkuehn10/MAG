@@ -10,7 +10,7 @@ Requirements = (OpSys == "LINUX") && (OpSysMajorVer == 9) && (Target.HasCHTCStag
 
 transfer_input_files = PROG_instl/python-3.8.tar.gz, \
                        PROG_instl/python-3.8-packages.tar.gz, \
-                       PROG_instl/run_prokka.py
+                       run_prokka_012026.py
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
