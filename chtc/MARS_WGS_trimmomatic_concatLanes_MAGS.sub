@@ -1,0 +1,217 @@
+universe = vanilla
+
+executable = MARS_WGS_trimmomatic_concatLanes_MAGS.sh
+arguments = $(lane1) $(lane2) $(lane3) $(lane4) $(lane5) $(lane6) $(lane7) $(lane8) $(sample)
+
+#REQUIREMENTS:
+
+Requirements = (OpSys == "LINUX") && (OpSysMajorVer == 9) && (Target.HasCHTCStaging == true)
+
+transfer_input_files = PROG_instl/Trimmomatic-0.39.zip, \
+                       PROG_instl/jre-8u231-linux-x64.tar.gz
+
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+
+log = MARS_WGS/trimAndConcat/102.log
+error = MARS_WGS/trimAndConcat/102.error
+output = MARS_WGS/trimAndConcat/102.out
+
+lane1 = S8_L002
+lane2 = S8_L003
+lane3 = S8_L004
+lane4 = S8_L005
+lane5 = S8_L006
+lane6 = S8_L007
+lane7 = S8_L008
+lane8 = S139_L008
+sample = 102
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+
+log = MARS_WGS/trimAndConcat/103.log
+error = MARS_WGS/trimAndConcat/103.error
+output = MARS_WGS/trimAndConcat/103.out
+
+lane1 = S198_L008
+lane2 = S67_L002
+lane3 = S67_L003
+lane4 = S67_L004
+lane5 = S67_L005
+lane6 = S67_L006
+lane7 = S67_L007
+lane8 = S67_L008
+sample = 103
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/104.log
+error = MARS_WGS/trimAndConcat/104.error
+output = MARS_WGS/trimAndConcat/104.out
+
+lane1 = S249_L002
+lane2 = S249_L003
+lane3 = S249_L004
+lane4 = S249_L005
+lane5 = S249_L006
+lane6 = S249_L007
+lane7 = S249_L008
+lane8 = S380_L008
+sample = 104
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/107.log
+error = MARS_WGS/trimAndConcat/107.error
+output = MARS_WGS/trimAndConcat/107.out
+
+lane1 = S80_L002
+lane2 = S80_L003
+lane3 = S80_L004
+lane4 = S80_L005
+lane5 = S80_L006
+lane6 = S80_L007
+lane7 = S80_L008
+lane8 = S211_L008
+sample = 107
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/109.log
+error = MARS_WGS/trimAndConcat/109.error
+output = MARS_WGS/trimAndConcat/109.out
+
+lane1 = S54_L002
+lane2 = S54_L003
+lane3 = S54_L004
+lane4 = S54_L005
+lane5 = S54_L006
+lane6 = S54_L007
+lane7 = S54_L008
+lane8 = S185_L008
+sample = 109
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/110.log
+error = MARS_WGS/trimAndConcat/110.error
+output = MARS_WGS/trimAndConcat/110.out
+
+lane1 = S55_L002
+lane2 = S55_L003
+lane3 = S55_L004
+lane4 = S55_L005
+lane5 = S55_L006
+lane6 = S55_L007
+lane7 = S55_L008
+lane8 = S186_L008
+sample = 110
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/111.log
+error = MARS_WGS/trimAndConcat/111.error
+output = MARS_WGS/trimAndConcat/111.out
+
+lane1 = S251_L002
+lane2 = S251_L003
+lane3 = S251_L004
+lane4 = S251_L005
+lane5 = S251_L006
+lane6 = S251_L007
+lane7 = S251_L008
+lane8 = S382_L008
+sample = 111
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/113.log
+error = MARS_WGS/trimAndConcat/113.error
+output = MARS_WGS/trimAndConcat/113.out
+
+lane1 = S220_L002
+lane2 = S220_L003
+lane3 = S220_L004
+lane4 = S220_L005
+lane5 = S220_L006
+lane6 = S220_L007
+lane7 = S220_L008
+lane8 = S351_L008
+sample = 113
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/115.log
+error = MARS_WGS/trimAndConcat/115.error
+output = MARS_WGS/trimAndConcat/115.out
+
+lane1 = S259_L002
+lane2 = S259_L003
+lane3 = S259_L004
+lane4 = S259_L005
+lane5 = S259_L006
+lane6 = S259_L007
+lane7 = S259_L008
+lane8 = S390_L008
+sample = 115
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
+
+log = MARS_WGS/trimAndConcat/116.log
+error = MARS_WGS/trimAndConcat/116.error
+output = MARS_WGS/trimAndConcat/116.out
+
+lane1 = S130_L002
+lane2 = S130_L003
+lane3 = S130_L004
+lane4 = S130_L005
+lane5 = S130_L006
+lane6 = S130_L007
+lane7 = S130_L008
+lane8 = S261_L008
+sample = 116
+
+request_memory = 50GB
+request_disk = 128GB
+request_cpus = 1
+
+queue
