@@ -15,15 +15,14 @@ export PATH=$(pwd)/bedtools2-2.28.0/bin:$PATH
 export PATH=$(pwd)/python-3.8/bin:$PATH
 export PYTHONPATH=$(pwd)/python-3.8-packages
 
-
-# transfer and unpack reads
-cp /staging/qzhang333/DOdiet_WGS/$1_R1_trimmed_paired_mouseDNAremoved.fastq.gz .
-cp /staging/qzhang333/DOdiet_WGS/$1_R2_trimmed_paired_mouseDNAremoved.fastq.gz .
+# transfer trimmed reads
+cp /staging/kuehn4/MARS_clean_reads/$1_R1_trimmed_paired_humanDNAremoved.fastq.gz .
+cp /staging/kuehn4/MARS_clean_reads/$1_R2_trimmed_paired_humanDNAremoved.fastq.gz .
 
 gzip -d *fastq.gz
 
 # transfer assembly output
-cp /staging/qzhang333/DOdiet_out/assembly_out_$1.tar.gz .
+cp /staging/kuehn4/MARS_WGS/assembly_out_$1.tar.gz .
 tar -zxf assembly_out_$1.tar.gz
 
 # build bowtie2 index
@@ -33,16 +32,16 @@ bowtie2-build assembly_out_$1/$1.contigs.500bp.fasta contig_bowtie2_$1/ref
 
 # alignment WGS reads to contigs
 bowtie2 -x contig_bowtie2_$1/ref \
-        -1 $1_R1_trimmed_paired_mouseDNAremoved.fastq \
-        -2 $1_R2_trimmed_paired_mouseDNAremoved.fastq \
+        -1 $1_R1_trimmed_paired_humanDNAremoved.fastq \
+        -2 $1_R2_trimmed_paired_humanDNAremoved.fastq \
         --local -p 4 |
 samtools view -bS > contig_align_$1.bam
 
 # sort bam file
 samtools sort contig_align_$1.bam -o contig_align_$1_sorted.bam
 
-# move output to staging/qzhang333
-mv contig_align_$1_sorted.bam /staging/qzhang333/DOdiet_out
+# move output to staging/kuehn4
+mv contig_align_$1_sorted.bam /staging/kuehn4/MARS_WGS
 
 # clear other data
 rm *.bam

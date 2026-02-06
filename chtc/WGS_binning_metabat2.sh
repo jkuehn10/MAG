@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # transfer assembly output files
-cp /staging/qzhang333/DOdiet_out/assembly_out_$1.tar.gz .
+cp /staging/kuehn4/MARS_WGS/assembly_out_$1.tar.gz .
 tar -xzf assembly_out_$1.tar.gz
 rm assembly_out_$1.tar.gz
 
 # transfer bowtie2 contig mapping bam file
-cp /staging/qzhang333/DOdiet_out/contig_align_$1_sorted.bam .
+cp /staging/kuehn4/MARS_WGS/contig_align_$1_sorted.bam .
 
 # create metabat2 output dir
 mkdir metabat2_out_$1
@@ -20,8 +20,8 @@ metabat2 -i assembly_out_$1/$1.contigs.500bp.fasta -a metabat2_out_$1/depth.txt 
 # compress output 
 tar -czf metabat2_out_$1.tar.gz metabat2_out_$1
 
-# move output to staging/qzhang333
-mv metabat2_out_$1.tar.gz /staging/qzhang333/DOdiet_out
+# move output to staging/kuehn4
+mv metabat2_out_$1.tar.gz /staging/kuehn4/MARS_WGS
 
 # clear other data
 rm *.bam
