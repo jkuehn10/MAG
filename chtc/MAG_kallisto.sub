@@ -25,16 +25,14 @@ request_disk = 64GB
 request_cpus = 32
 
 queue sample from(
-    AJ_7_DNA
-    AJ_8_DNA
-    AJ_9_DNA
-    AJ_11_DNA
-    AJ_12_DNA
-    AJ_13_DNA
-    AJ_14_DNA
-    AJ_18_DNA
-    AJ_19_DNA
-    AJ_22_DNA
-    AJ_23_DNA
-    AJ_25_DNA
+102
+103
+104
+107
+109
+110
+111
+113
+115
+116
 )
