@@ -38,17 +38,17 @@ sed -i "s:/var/lib/condor/execute/slot1/dir_243108:${PWD}:g" python-3.10.12-pack
 >&2 echo -e '\n'
 
 # transfer MAG files
-cp /staging/qzhang333/DOFS_MAG_HQ.tar.gz .
-tar -zxf DOFS_MAG_HQ.tar.gz
+cp /staging/kuehn4/MARS_WGS/MARS_MAG_HQ.tar.gz .
+tar -zxf MARS_MAG_HQ.tar.gz
 
 # run drep
 mkdir MAG_drep_out
 
-dRep dereplicate MAG_drep_out -p 8 -pa 0.9 -sa 0.99 --ignoreGenomeQuality -g DOFS_MAG_HQ/*.fa
+dRep dereplicate MAG_drep_out -p 8 -pa 0.9 -sa 0.99 --ignoreGenomeQuality -g MARS_MAG_HQ/*.fa
 
-# move output to staging/qzhang333
+# move output to staging/kuehn4
 tar -czf MAG_drep_out.tar.gz MAG_drep_out
-mv MAG_drep_out.tar.gz /staging/qzhang333
+mv MAG_drep_out.tar.gz /staging/kuehn4/MARS_WGS
 
 # clear other data
 rm *.tar.gz

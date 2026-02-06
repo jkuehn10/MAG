@@ -31,15 +31,15 @@ tar -xzf checkm_data_2015_01_16.tar.gz
 checkm data setRoot checkm_data_2015_01_16
 
 # transfer MAG files
-cp /staging/qzhang333/DOFS_MAG.tar.gz .
-tar -zxf DOFS_MAG.tar.gz
+cp /staging/kuehn4/MARS_WGS/MARS_MAG.tar.gz .
+tar -zxf MARS_MAG.tar.gz
 
 # run checkm
-checkm lineage_wf -t 4 -x fa DOFS_MAG/ MAG_checkm_out/
+checkm lineage_wf -t 4 -x fa MARS_MAG_ALL/MARS_MAG/ MAG_checkm_out/
 
-# move output to staging/qzhang333
+# move output to staging/kuehn4
 tar -czf MAG_checkm_out.tar.gz MAG_checkm_out
-mv MAG_checkm_out.tar.gz /staging/qzhang333/DOdiet_out
+mv MAG_checkm_out.tar.gz /staging/kuehn4/MARS_WGS
 
 # clear other data
 rm *.tar.gz
